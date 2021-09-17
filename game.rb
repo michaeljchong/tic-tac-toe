@@ -68,10 +68,6 @@ class Player
     @name = (@sign == 'X') ? "Player 1" : "Player 2"
   end
 
-  def check_name(name)
-    
-  end
-
   def turn(board)
     print "#{@name}, what is your next move? (Enter a number from 1-9) "
     while
