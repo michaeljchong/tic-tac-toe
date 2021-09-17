@@ -26,24 +26,3 @@
     <li>Classes</li>
     <li>Attribute accessors</li>
 </ul>
-
-<h2>Initial Project Outline / Pseudocode</h2>
-<p>board class
-  initialize
-    @board
-  set value at position
-    @board[][] = value
-  check value at position
-    return @board[][]
-  board_full
-    check all positions on board == ''
-player class
-  initialize(player name)
-  turn
-  win?
-    check row, col, diagonal for same value
-game class
-  play
-    until finished
-  reset
-</p>
