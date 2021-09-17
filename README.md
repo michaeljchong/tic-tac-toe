@@ -28,7 +28,7 @@
 </ul>
 
 <h2>Initial Project Outline / Pseudocode</h2>
-board class
+<p>board class
   initialize
     @board
   set value at position
@@ -46,3 +46,4 @@ game class
   play
     until finished
   reset
+</p>
