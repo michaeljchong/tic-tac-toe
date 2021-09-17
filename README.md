@@ -22,7 +22,7 @@
     <li></li>
 </ul>
 
-<h2>Project Outline / Pseudocode</h2>
+<h2>Initial Project Outline / Pseudocode</h2>
 board class
   initialize
     @board
@@ -39,5 +39,6 @@ player class
     check row, col, diagonal for same value
 game class
   play
+    until finished
   reset
 
