@@ -1,14 +1,14 @@
 class Board
   def initialize
-    @board = [
-      ['x','x','x'],
-      ['x','x','x'],
-      ['x','x','x']
+    @grid = [
+      [' ',' ',' '],
+      [' ',' ',' '],
+      [' ',' ',' ']
     ]
   end
 
   def display
-    @board.each do |row|
+    @grid.each do |row|
       print "|"
       row.each { |value| print "#{value}|" }
       puts
@@ -17,16 +17,40 @@ class Board
   end
 
   def position(row, col)
-    @board[row][col]
+    @grid[row][col]
   end
 
   def set_value(row, col, value)
-    @board[row][col] = value
+    @grid[row][col] = value
+  end
+
+  def check_rows(sign)
+    @grid.any? do |row|
+      row.all? { |value| value == sign }
+    end
+  end
+
+  def check_cols(sign)
+    @grid.transpose.any? do |col|
+      col.all? { |value| value == sign }
+    end
+  end
+
+  def check_diags(sign)
+    left_diag = [self.position(0, 0), self.position(1, 1), self.position(2, 2)]
+    right_diag = [self.position(0, 2), self.position(1, 1), self.position(2, 0)]
+    left_diag == [sign, sign, sign] || right_diag == [sign, sign, sign]
+  end
+
+  def win?(sign)
+    check_rows(sign)
+    check_cols(sign)
+    check_diags(sign)
   end
 
   def full?
-    @board.none? do |row|
-      row.include?('')
+    @grid.none? do |row|
+      row.include?(' ')
     end
   end
 end
@@ -34,26 +58,60 @@ end
 class Player
   attr_reader :name, :sign
 
-  @@player_count = 0
-  def initialize(player_name)
-    @name = player_name
-    @@player_count += 1
-    @sign = (@@player_count % 2 == 0) ? 'X' : 'O'
+  def initialize(sign)
+    @sign = sign
+    @name = (@sign == 'X') ? "Player 1" : "Player 2"
   end
 
-  def turn
-    
+  def get_move
+    while
+      input = gets.chomp
+      break if ('1'..'9').include?(input)
+      puts "Incorrect input. Enter a number from 1-9."
+    end
+    self.translate(input.to_i)
+  end
+
+  def translate(position)
+    row = (position/3.0).ceil()-1
+    col = (position+2)%3
+    [row, col]
   end
 end
 
+class Game
+  def initialize
+    @board = Board.new()
+    @player_1 = Player.new('X')
+    @player_2 = Player.new('O')
+  end
 
-b = Board.new()
-b.display
-b.set_value(0,1,'2')
-b.display
-p b.full?
+  def turn(player)
+    puts "#{player.name}, what is your next move? Enter a number from 1-9."
+    while
+      move = player.get_move
+      row, col = move[0], move[1]
+      if @board.position(row, col) == ' '
+        @board.set_value(row, col, player.sign)
+        break
+      end
+      puts "That space has already been taken. Please choose another one."
+    end
+  end
 
-p1 = Player.new("Bob")
-p p1.sign, p1.name
-p2 = Player.new("Sally")
-p p2.sign, p2.name
+  def play
+    current_player = @player_1
+    until @board.full?
+      @board.display
+      turn(current_player)
+      if @board.win?(current_player.sign)
+        puts "#{current_player.name} has won!"
+        return
+      end
+      current_player = (current_player == @player_1) ? @player_2 : @player_1
+    end
+    puts "It's a draw!"
+  end
+end
+
+Game.new().play
