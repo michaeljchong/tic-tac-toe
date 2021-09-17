@@ -1,6 +1,6 @@
 <h1>Tic Tac Toe using Ruby</h1>
 
-<p>View the <a href='https://michaeljchong.github.io/tic-tac-toe/'>final product</a>.</p>
+<p>View the <a href='https://replit.com/@michaeljchong/Tic-Tac-Toe?v=1'>final product</a>.</p>
 
 <h2>Lesson's Learned:</h2>
 <ul>
