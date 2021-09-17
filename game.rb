@@ -1,9 +1,9 @@
 class Board
   def initialize
     @grid = [
-      [' ',' ',' '],
-      [' ',' ',' '],
-      [' ',' ',' ']
+      ['1','2','3'],
+      ['4','5','6'],
+      ['7','8','9']
     ]
   end
 
@@ -53,6 +53,12 @@ class Board
       row.include?(' ')
     end
   end
+
+  def clear
+    @grid.map! do |row|
+      row.map! { |value| value = ' ' }
+    end
+  end
 end
 
 class Player
@@ -99,7 +105,16 @@ class Game
     end
   end
 
+  def intro
+    puts "Let's play Tic Tac Toe!"
+    puts "Enter your moves according to the following grid"
+    @board.display
+    @board.clear
+    puts "Let's begin..."
+  end
+
   def play
+    self.intro
     current_player = @player_1
     until @board.full?
       @board.display
