@@ -1,18 +1,18 @@
 class Board
   def initialize
     @grid = [
-      ['1','2','3'],
-      ['4','5','6'],
-      ['7','8','9']
+      ['1', '2', '3'],
+      ['4', '5', '6'],
+      ['7', '8', '9']
     ]
   end
 
   def display
     @grid.each do |row|
-      print "|"
+      print '|'
       row.each { |value| print "#{value}|" }
       puts
-      puts " - - - "
+      puts ' - - - '
     end
   end
 
@@ -37,8 +37,8 @@ class Board
   end
 
   def check_diags(sign)
-    left_diag = [self.position(0, 0), self.position(1, 1), self.position(2, 2)]
-    right_diag = [self.position(0, 2), self.position(1, 1), self.position(2, 0)]
+    left_diag = [position(0, 0), position(1, 1), position(2, 2)]
+    right_diag = [position(0, 2), position(1, 1), position(2, 0)]
     left_diag == [sign, sign, sign] || right_diag == [sign, sign, sign]
   end
 
@@ -54,7 +54,7 @@ class Board
 
   def clear
     @grid.map! do |row|
-      row.map! { |value| value = ' ' }
+      row.map! { ' ' }
     end
   end
 end
@@ -65,66 +65,66 @@ class Player
 
   def initialize(sign)
     @sign = sign
-    @name = (@sign == 'X') ? "Player 1" : "Player 2"
+    @name = @sign == 'X' ? 'Player 1' : 'Player 2'
   end
 
   def turn(board)
     print "#{@name}, what is your next move? (Enter a number from 1-9) "
-    while
-      move = self.get_move
-      row, col = move[0], move[1]
+    while (move = player_move)
+      row = move[0]
+      col = move[1]
       if board.position(row, col) == ' '
         board.set_value(row, col, @sign)
         break
       end
-      puts "That space has already been taken. Please choose another one."
+      puts 'That space has already been taken. Please choose another one.'
     end
   end
 
-  def get_move
-    while
-      input = gets.chomp
+  def player_move
+    while (input = gets.chomp)
       break if ('1'..'9').include?(input)
-      puts "Incorrect input. Enter a number from 1-9."
+
+      puts 'Incorrect input. Enter a number from 1-9.'
     end
-    self.translate(input.to_i)
+    translate(input.to_i)
   end
 
   def translate(position)
-    row = (position/3.0).ceil()-1
-    col = (position+2)%3
+    row = (position / 3.0).ceil - 1
+    col = (position + 2) % 3
     [row, col]
   end
 end
 
 class Game
   def initialize
-    @board = Board.new()
-    @player_1 = Player.new('X')
-    @player_2 = Player.new('O')
+    @board = Board.new
+    @player1 = Player.new('X')
+    @player2 = Player.new('O')
   end
 
   def intro
     puts "Let's play Tic Tac Toe!"
-    self.set_names
-    puts "Enter your moves according to the following grid"
+    set_names
+    puts 'Enter your moves according to the following grid'
     @board.display
     @board.clear
     puts "Let's begin..."
   end
 
   def set_names
-    print "Who is playing? (default: Player 1) "
+    print 'Who is playing? (default: Player 1) '
     name = gets.chomp
-    @player_1.name = name unless name.empty?
-    print "Who else is playing? (default: Player 2) "
+    @player1.name = name unless name.empty?
+    print 'Who else is playing? (default: Player 2) '
     name = gets.chomp
-    @player_2.name = name unless name.empty?
+    @player2.name = name unless name.empty?
   end
 
   def play
-    self.intro
-    player = @player_1
+    intro
+    player = @player1
     until @board.full?
       @board.display
       player.turn(@board)
@@ -133,11 +133,11 @@ class Game
         puts "#{player.name} has won!"
         return
       end
-      player = (player == @player_1) ? @player_2 : @player_1
+      player = player == @player1 ? @player2 : @player1
     end
     @board.display
     puts "It's a draw!"
   end
 end
 
-Game.new().play
+Game.new.play
